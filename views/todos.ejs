@@ -1,0 +1,48 @@
+<%- include('./partials/header') %>
+
+<div class="container">
+  <h2>My Tasks</h2>
+  
+  <div class="todo-list">
+    <% if(todos.length > 0) { %>
+      <% todos.forEach(todo => { %>
+        <div class="todo-item <%= todo.completed ? 'completed' : '' %>">
+          <div class="todo-content">
+            <h3><%= todo.title %></h3>
+            <% if(todo.description) { %>
+              <p><%= todo.description %></p>
+            <% } %>
+            <small>Created: <%= todo.createdAt.toLocaleDateString() %></small>
+          </div>
+          
+          <div class="todo-actions">
+            <!-- Edit todo -->
+            <a href="/todos/<%= todo._id %>/edit" class="btn btn-edit">
+              Edit
+            </a>
+            
+            <!-- Toggle completion status -->
+            <form action="/todos/<%= todo._id %>?_method=PUT" method="POST" class="inline-form">
+              <button type="submit" class="btn <%= todo.completed ? 'btn-incomplete' : 'btn-complete' %>">
+                <%= todo.completed ? 'Mark Incomplete' : 'Mark Complete' %>
+              </button>
+            </form>
+            
+            <!-- Delete todo -->
+            <form action="/todos/<%= todo._id %>?_method=DELETE" method="POST" class="inline-form">
+              <button type="submit" class="btn btn-delete">Delete</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="no-todos">No todos found. Add some!</p>
+    <% } %>
+  </div>
+  
+  <div class="navigation">
+    <a href="/" class="btn">Add New Task</a>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>
